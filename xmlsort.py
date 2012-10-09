@@ -99,7 +99,7 @@ def compare_elements(el_a, el_b):
 
     return 0
 
-def sort_element(doc, el):
+def sort_element(doc, el, exclude):
     # print "ENTER"
     if el == None:
         # print "EXIT"
@@ -107,6 +107,10 @@ def sort_element(doc, el):
     
     if el.type == 'text':
         # print "EXIT"
+        return True
+
+    # todo: an xpath approach will be more consistent
+    if el.name in exclude:
         return True
 
     # print "sort element: [%s]" % el.name
@@ -128,7 +132,7 @@ def sort_element(doc, el):
     # --- sort children ---
     sub = el.get_children()
     while sub != None:
-        sort_element(doc, sub)
+        sort_element(doc, sub, exclude)
         sub = sub.next
 
     # doc.dump(sys.stdout)
@@ -175,23 +179,29 @@ def sort_element(doc, el):
 #
 
 def main():
-    debug=False
-    
+    debug=True
+    exclude=[]
+
+    if len(sys.argv) > 3:
+        for excl in range(3,len(sys.argv)):
+            exclude.append(sys.argv[excl])
+
     doc = libxml2.parseFile(sys.argv[1])
     if debug:
+        print "EXCLUDE: %s" % exclude
         sys.stderr.write("vvvvvvv\n")
         sys.stderr.write(doc.serialize(None, 2)[22:])
         sys.stderr.write("^^^^^^^\n")
 
     root = doc.getRootElement() 
-    sort_element(doc, root)
+    sort_element(doc, root, exclude)
     ret = doc.serialize(None, 2)[22:]
     if debug:
         sys.stderr.write("vvvvvvv\n")
         sys.stderr.write("%s" % ret)
         sys.stderr.write("^^^^^^^\n")
 
-    if len(sys.argv) > 2:
+    if len(sys.argv) > 2 and sys.argv[2] != "-":
         fout = file(sys.argv[2], "w")
     else:
         fout = sys.stdout
