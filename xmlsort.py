@@ -1,4 +1,20 @@
 #!/usr/bin/python
+#
+# Copyright (c) 2012, GEM Foundation.
+#
+# Author, Matteo Nastasi <nastasi@openquake.org>, 
+#                        <nastasi@alternativeoutput.it>
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU Affero General Public License as published
+# by the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABLILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# Affero General Public License for more details. 
+#
+
 import libxml2
 import sys
 
@@ -75,11 +91,11 @@ def compare_elements(el_a, el_b):
         sub_b = sub_b.next
         
 
-    print "compare_elements return EQUAL: "
-    el_a.debugDumpNode(sys.stdout, 5)
-    print "---------------------------"
-    el_b.debugDumpNode(sys.stdout, 5)
-    print "---------------------------"
+    # print "compare_elements return EQUAL: "
+    # el_a.debugDumpNode(sys.stdout, 5)
+    # print "---------------------------"
+    # el_b.debugDumpNode(sys.stdout, 5)
+    # print "---------------------------"
 
     return 0
 
