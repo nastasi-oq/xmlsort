@@ -1,0 +1,18 @@
+<root root_attr3="root3" root_attr="root" root_attr2="root2">
+      <a>z Cont A</a>  
+  <b aaa="B">Cont B1</b>
+  <b aaa="A">Cont B2</b>
+  <c aaa="A">Cont C2</c>
+  <c aaa="A">Cont C1</c>
+  <d>Cont D2</d>
+  <d>Cont D1</d>
+  <e aaa="A"><z>Cont Z2 (1)</z></e>
+  <e aaa="A"><z>Cont Z1 (2)</z></e>
+  <a>the end</a>
+  <f aaa="A">Cont F1</f>
+  <f aaa="A" bbb="B">Cont F2</f>
+  <f2 aaa="A" bbb="B">Cont F21</f2>
+  <f2 aaa="A">Cont F22</f2>
+  <g bbb="B">Cont G1</g>
+  <g aaa="A">Cont G2</g>
+</root>

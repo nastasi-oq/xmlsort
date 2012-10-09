@@ -1,0 +1,5 @@
+<root root_attr2="root2" root_attr="root" root_attr3="root3">
+  <aa>the end</aa>
+  <b aaa="B2">Cont B2</b>
+  <b aaa="B">Cont B1</b>
+</root>
