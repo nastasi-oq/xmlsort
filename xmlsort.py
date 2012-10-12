@@ -15,6 +15,7 @@
 # Affero General Public License for more details. 
 #
 
+import argparse
 import libxml2
 import sys
 
@@ -99,7 +100,13 @@ def compare_elements(el_a, el_b):
 
     return 0
 
-def sort_element(doc, el, exclude):
+def out_of_depth(depth):
+    if depth == 0:
+        return True
+
+    return False
+
+def sort_element(doc, el, xp_exclude, depth):
     # print "ENTER"
     if el == None:
         # print "EXIT"
@@ -109,8 +116,7 @@ def sort_element(doc, el, exclude):
         # print "EXIT"
         return True
 
-    # todo: an xpath approach will be more consistent
-    if el.name in exclude:
+    if el in xp_exclude:
         return True
 
     # print "sort element: [%s]" % el.name
@@ -129,10 +135,14 @@ def sort_element(doc, el, exclude):
             attr_b = attr_b.next
         attr_a = attr_a.next
 
+    # print "DEPTH [%s]" % depth
+    if out_of_depth(depth - 1):
+        return True
+
     # --- sort children ---
     sub = el.get_children()
     while sub != None:
-        sort_element(doc, sub, exclude)
+        sort_element(doc, sub, xp_exclude, depth - 1)
         sub = sub.next
 
     # doc.dump(sys.stdout)
@@ -179,22 +189,58 @@ def sort_element(doc, el, exclude):
 #
 
 def main():
-    debug=True
-    exclude=[]
+    debug=False
 
-    if len(sys.argv) > 3:
-        for excl in range(3,len(sys.argv)):
-            exclude.append(sys.argv[excl])
+    parser = argparse.ArgumentParser(description='Sort an xmlfile in various ways.')
+    parser.add_argument('infile', help="input filename")
+    parser.add_argument('outfile', help="output filename or '-' to dump on stdout")
+    parser.add_argument('-i', '--include', action='append', default = [], help="<xpath>,<depth>,<step> for sortable element match")
+    parser.add_argument('-x', '--exclude', action='append', default = [], help="<xpath> for unsortable element")
 
-    doc = libxml2.parseFile(sys.argv[1])
+    argz = parser.parse_args()
+
+    doc = libxml2.parseFile(argz.infile)
+
+    # print "argz.include"
+    # print argz.include
+
+    xp_include = []
+    for inc_cur in argz.include:
+        # print "inc_cur"
+        # print inc_cur
+        xp_path, depth = inc_cur.split(',')
+        depth = int(depth)
+        xp_rets = doc.xpathEval(xp_path)
+        # if xp_rets != None:
+        for xp_ret in xp_rets:
+            # print "xp_ret"
+            # print xp_ret
+            xp_include.extend([ [ xp_ret, depth ] ])
+
+    # print "xp_include"
+    # print xp_include
+
+    xp_exclude = []
+    for exc_cur in argz.exclude:
+        xp_path = exc_cur
+        xp_exclude.extend(doc.xpathEval(xp_path))
+
+
     if debug:
-        print "EXCLUDE: %s" % exclude
+        print "EXCLUDE: %s" % argz.exclude
         sys.stderr.write("vvvvvvv\n")
         sys.stderr.write(doc.serialize(None, 2)[22:])
         sys.stderr.write("^^^^^^^\n")
 
-    root = doc.getRootElement() 
-    sort_element(doc, root, exclude)
+    if len(argz.include) == 0:
+        root = doc.getRootElement()
+        sort_element(doc, root, xp_exclude, -1)
+    else:
+        for sr in xp_include:
+            for el in sr[0]:
+                sort_element(doc, sr[0], xp_exclude, sr[1])
+
+
     ret = doc.serialize(None, 2)[22:]
     if debug:
         sys.stderr.write("vvvvvvv\n")
