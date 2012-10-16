@@ -196,11 +196,12 @@ def main():
     parser = argparse.ArgumentParser(description='Sort an xmlfile in various ways.')
     parser.add_argument('infile', help="input filename")
     parser.add_argument('outfile', help="output filename or '-' to dump on stdout")
-    parser.add_argument('-i', '--include', action='append', default = [], help="<xpath>,<depth>,<step> for sortable element match")
+    parser.add_argument('-i', '--include', action='append', nargs=2, default = [], help="<xpath> <depth> for sortable element match")
     parser.add_argument('-x', '--exclude', action='append', default = [], help="<xpath> for unsortable element")
 
     argz = parser.parse_args()
-
+    # print argz
+    # sys.exit(123)
     doc = libxml2.parseFile(argz.infile)
 
     # print "argz.include"
@@ -210,8 +211,9 @@ def main():
     for inc_cur in argz.include:
         # print "inc_cur"
         # print inc_cur
-        xp_path, depth = inc_cur.split(',')
-        depth = int(depth)
+        # xp_path, depth = inc_cur.split(',')
+        xp_path = inc_cur[0]
+        depth = int(inc_cur[1])
         xp_rets = doc.xpathEval(xp_path)
         # if xp_rets != None:
         for xp_ret in xp_rets:

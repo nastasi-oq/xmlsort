@@ -37,20 +37,20 @@
 declare -a exp com
 
 verbose=0
-if [ $1 = "-v" ]; then
+if [ "$1" = "-v" ]; then
     verbose=1
 fi
 
 echo
 echo "Regression of --include option"
 
-com+=('./xmlsort.py xml/sample06.xml - -i "/a",1')
+com+=('./xmlsort.py xml/sample06.xml - -i "/a" 1')
 exp+=("$(echo -e "<a>\n  <e>\n    <sub_e>SUB_E CONT</sub_e>\n  </e>\n  <d>\n    <sub_d>SUB_D CONT</sub_d>\n  </d>\n  <c>\n    <g>G CONT</g>\n    <f>F CONT</f>\n  </c>\n  <b>\n    B CONT\n  </b>\n</a>")")
 
-com+=('./xmlsort.py xml/sample06.xml - -i "/a",2')
+com+=('./xmlsort.py xml/sample06.xml - -i "/a" 2')
 exp+=("$(echo -e "<a>\n  <b>\n    B CONT\n  </b>\n  <c>\n    <g>G CONT</g>\n    <f>F CONT</f>\n  </c>\n  <d>\n    <sub_d>SUB_D CONT</sub_d>\n  </d>\n  <e>\n    <sub_e>SUB_E CONT</sub_e>\n  </e>\n</a>\n")")
 
-com+=('./xmlsort.py xml/sample06.xml - -i "/a",3')
+com+=('./xmlsort.py xml/sample06.xml - -i "/a" 3')
 exp+=("$(echo -e "<a>\n  <b>\n    B CONT\n  </b>\n  <c>\n    <f>F CONT</f>\n    <g>G CONT</g>\n  </c>\n  <d>\n    <sub_d>SUB_D CONT</sub_d>\n  </d>\n  <e>\n    <sub_e>SUB_E CONT</sub_e>\n  </e>\n</a>")")
 
 # com+=('./xmlsort.py xml/sample06.xml - -i "/a",1')
