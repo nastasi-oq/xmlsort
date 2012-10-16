@@ -194,10 +194,10 @@ def main():
     debug=False
 
     parser = argparse.ArgumentParser(description='Sort an xmlfile in various ways.')
-    parser.add_argument('infile', help="input filename")
-    parser.add_argument('outfile', help="output filename or '-' to dump on stdout")
-    parser.add_argument('-i', '--include', action='append', nargs=2, default = [], help="<xpath> <depth> for sortable element match")
-    parser.add_argument('-x', '--exclude', action='append', default = [], help="<xpath> for unsortable element")
+    parser.add_argument('infile', metavar='<infile>', help="input filename")
+    parser.add_argument('outfile', metavar='<outfile>', help="output filename or '-' to use stdout")
+    parser.add_argument('-i', '--include', metavar=('<xpath>', '<depth>'), action='append', nargs=2, default = [], help="for sortable element match")
+    parser.add_argument('-x', '--exclude', metavar='<xpath>', action='append', default = [], help="<xpath> for unsortable element")
 
     argz = parser.parse_args()
     # print argz
