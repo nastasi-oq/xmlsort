@@ -1,5 +1,7 @@
 #!/usr/bin/python
 #
+# xmlsort - xmlsort.py
+#
 # Copyright (c) 2012, GEM Foundation.
 #
 # Author, Matteo Nastasi <nastasi@openquake.org>, 
