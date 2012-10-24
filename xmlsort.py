@@ -195,7 +195,7 @@ def main():
 
     parser = argparse.ArgumentParser(description='Sort an xmlfile in various ways.')
     parser.add_argument('infile', metavar='<infile>', help="input filename")
-    parser.add_argument('outfile', metavar='<outfile>', help="output filename or '-' to use stdout")
+    parser.add_argument('outfile', metavar='<outfile>', help="output filename or '-' to use stdout", default = "-")
     parser.add_argument('-i', '--include', metavar=('<xpath>', '<depth>'), action='append', nargs=2, default = [], help="for sortable element match")
     parser.add_argument('-x', '--exclude', metavar='<xpath>', action='append', default = [], help="<xpath> for unsortable element")
 
@@ -251,8 +251,8 @@ def main():
         sys.stderr.write("%s" % ret)
         sys.stderr.write("^^^^^^^\n")
 
-    if len(sys.argv) > 2 and sys.argv[2] != "-":
-        fout = file(sys.argv[2], "w")
+    if argz.outfile != "-":
+        fout = file(argz.outfile, "w")
     else:
         fout = sys.stdout
 
